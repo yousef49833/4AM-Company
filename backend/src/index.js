@@ -13,7 +13,8 @@ const isMongoDB = MONGODB_URI && (
   MONGODB_URI.startsWith('mongodb+srv://')
 );
 
-const authRoutes = require('./routes/auth');
+// Use MongoDB routes if MongoDB is detected, otherwise use SQL routes
+const authRoutes = isMongoDB ? require('./routes/authMongo') : require('./routes/auth');
 const adminRoutes = require('./routes/admin');
 const tasksRoutes = require('./routes/tasks');
 const incentivesRoutes = require('./routes/incentives');

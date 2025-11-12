@@ -125,6 +125,14 @@ async function initMongoDB() {
         console.log('✅ Updated main admin role to main_admin');
       }
       console.log('✅ Main admin found:', mainAdmin.email);
+      
+      // Check for sub-admins
+      const subAdmins = await Admin.find({ role: 'sub_admin', parentAdminId: mainAdmin._id });
+      if (subAdmins.length === 0) {
+        console.log('⚠️  No sub-admins found. Run "npm run init-sub-admins" to create sub-admin accounts.');
+      } else {
+        console.log(`✅ Found ${subAdmins.length} sub-admin(s) linked to main admin`);
+      }
     }
     
     return true;

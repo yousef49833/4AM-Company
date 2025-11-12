@@ -35,15 +35,8 @@ async function initSubAdmins() {
     if (subAdmin1) {
       console.log(`⚠️  Sub-admin 1 (${subAdmin1Email}) already exists. Updating...`);
       subAdmin1.name = subAdmin1Name;
-<<<<<<< HEAD
       subAdmin1.password = subAdmin1Password; // Will be hashed by pre-save hook
-=======
-      // Only update password if it's different (to avoid unnecessary re-hashing)
-      const isPasswordMatch = await subAdmin1.comparePassword(subAdmin1Password);
-      if (!isPasswordMatch) {
-        subAdmin1.password = subAdmin1Password; // Will be hashed by pre-save hook
-      }
->>>>>>> 7257175 (update project)
+      subAdmin1.markModified('password'); // Ensure password is hashed on save
       subAdmin1.role = 'sub_admin';
       subAdmin1.parentAdminId = mainAdmin._id;
       await subAdmin1.save();
@@ -69,15 +62,8 @@ async function initSubAdmins() {
     if (subAdmin2) {
       console.log(`⚠️  Sub-admin 2 (${subAdmin2Email}) already exists. Updating...`);
       subAdmin2.name = subAdmin2Name;
-<<<<<<< HEAD
       subAdmin2.password = subAdmin2Password; // Will be hashed by pre-save hook
-=======
-      // Only update password if it's different (to avoid unnecessary re-hashing)
-      const isPasswordMatch = await subAdmin2.comparePassword(subAdmin2Password);
-      if (!isPasswordMatch) {
-        subAdmin2.password = subAdmin2Password; // Will be hashed by pre-save hook
-      }
->>>>>>> 7257175 (update project)
+      subAdmin2.markModified('password'); // Ensure password is hashed on save
       subAdmin2.role = 'sub_admin';
       subAdmin2.parentAdminId = mainAdmin._id;
       await subAdmin2.save();

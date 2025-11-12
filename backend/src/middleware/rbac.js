@@ -165,11 +165,7 @@ async function enforceSubAdminAccess(req, res, next) {
 
     // If sub-admin, they can only access their own resources
     if (currentAdmin.role === 'sub_admin') {
-<<<<<<< HEAD
       const targetId = req.params.id || req.body.id || req.body.userId;
-=======
-      const targetId = req.params.id || req.body.id || req.body.userId || req.body.assignedTo || req.body.recipientId;
->>>>>>> 7257175 (update project)
       
       if (targetId && targetId !== req.userId.toString()) {
         // Check if target is a sub-admin under the same parent
@@ -204,61 +200,11 @@ async function enforceSubAdminAccess(req, res, next) {
   }
 }
 
-<<<<<<< HEAD
-=======
-/**
- * Middleware to prevent sub-admins from assigning tasks or sending messages to main admin
- * This checks for common field names that might contain admin IDs
- * Note: This middleware should be used after authMiddleware to ensure req.userId is set
- */
-async function preventSubAdminTargetingMainAdmin(req, res, next) {
-  try {
-    if (!req.userId) {
-      return res.status(401).json({ error: 'unauthorized' });
-    }
-
-    const currentAdmin = await Admin.findById(req.userId).select('role');
-    
-    if (!currentAdmin) {
-      return res.status(401).json({ error: 'user not found' });
-    }
-
-    if (currentAdmin.role === 'sub_admin') {
-      // Check various possible field names for target admin ID
-      const targetAdminId = req.body.targetAdminId || 
-                           req.body.adminId || 
-                           req.body.recipientId || 
-                           req.body.assignedTo ||
-                           req.body.toAdminId;
-      
-      if (targetAdminId) {
-        const targetAdmin = await Admin.findById(targetAdminId).select('role');
-        
-        if (targetAdmin && targetAdmin.role === 'main_admin') {
-          return res.status(403).json({ 
-            error: 'forbidden - sub-admins cannot send tasks or messages to main admin' 
-          });
-        }
-      }
-    }
-    next();
-  } catch (err) {
-    console.error('Prevent sub-admin targeting main admin error:', err);
-    return res.status(500).json({ error: 'server error' });
-  }
-}
-
->>>>>>> 7257175 (update project)
 module.exports = {
   requireRole,
   requireMainAdmin,
   requireSubAdmin,
   requireMainAdminOrSubAdmin,
   preventSubAdminAccessToMainAdmin,
-<<<<<<< HEAD
   enforceSubAdminAccess
-=======
-  enforceSubAdminAccess,
-  preventSubAdminTargetingMainAdmin
->>>>>>> 7257175 (update project)
 };
